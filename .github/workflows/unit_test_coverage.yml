@@ -30,7 +30,7 @@ jobs:
           node-version: 18.x
 
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -90,9 +90,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage
+          
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           file: lcov.info
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          

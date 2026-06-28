@@ -11,6 +11,7 @@ module.exports = (webpackConfigEnv, argv) => {
     projectName: "madie-frontend-template",
     webpackConfigEnv,
     argv,
+    outputSystemJS: true,
     disableHtmlGeneration: true,
   });
 

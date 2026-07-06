@@ -19,18 +19,15 @@ jobs:
   build:
     name: Checkout, install, lint, build and test with coverage
     runs-on: ubuntu-latest
-    env:
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 24.x
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: 24.x
+          node-version: 20.x
 
       - name: Cache node modules
         uses: actions/cache@v4
@@ -48,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Audit dependencies for security vulnerabilities
-        run: npm audit
+        run: npm audit --omit=dev --audit-level=${{ secrets.NPM_AUDIT_LEVEL }}
 
       - name: Lint the source code
         run: npm run-script lint
@@ -62,17 +59,44 @@ jobs:
       - name: Execute test coverage
         run: npm run-script coverage
 
+      - name: Store the coverage report as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/lcov.info
+
+  upload-codacy-coverage:
+    name: Upload code coverage to Codacy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+
       - name: Upload code coverage to Codacy
-        if: ${{ env.CODACY_PROJECT_TOKEN != '' }}
         uses: codacy/codacy-coverage-reporter-action@master
         with:
-          project-token: ${{ env.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage/lcov.info
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: lcov.info
+
+  upload-codecov-coverage:
+    name: Upload code coverage to Codecov
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
 
       - name: Upload code coverage to Codecov
-        if: ${{ env.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v4
         with:
-          file: coverage/lcov.info
+          file: lcov.info
           fail_ci_if_error: true
-          token: ${{ env.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}

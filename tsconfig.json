@@ -5,6 +5,7 @@
     "declarationDir": "dist",
     "declarationMap": true,
     "jsx": "react-jsx",
+    "skipLibCheck": true,
     "sourceMap": true
   },
   "files": ["src/madie-madie-frontend-template.tsx"],

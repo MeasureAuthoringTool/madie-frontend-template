@@ -11,6 +11,7 @@ module.exports = (webpackConfigEnv, argv) => {
     projectName: "madie-frontend-template",
     webpackConfigEnv,
     argv,
+    outputSystemJS: true,
     disableHtmlGeneration: true,
   });
 
@@ -39,14 +40,14 @@ module.exports = (webpackConfigEnv, argv) => {
         {
           directory: path.join(
             __dirname,
-            "node_modules/@madie/madie-root/dist/"
+            "node_modules/@madie/madie-root/dist/",
           ),
           publicPath: "/",
         },
         {
           directory: path.join(
             __dirname,
-            "node_modules/@madie/madie-auth/dist/"
+            "node_modules/@madie/madie-auth/dist/",
           ),
           publicPath: "/madie-auth",
         },
@@ -56,7 +57,7 @@ module.exports = (webpackConfigEnv, argv) => {
       new HtmlWebpackPlugin({
         template: path.join(
           __dirname,
-          "node_modules/@madie/madie-root/dist/index.html"
+          "node_modules/@madie/madie-root/dist/index.html",
         ),
       }),
     ],

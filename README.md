@@ -45,11 +45,11 @@ This repository is a template for creating new frontend modules in the MADiE eco
 ## Project Structure
 
 src/
-  madie-madie-frontend-template.tsx
-  root.component.tsx
-  root.component.test.tsx
-  styles/
-  types/
+madie-madie-frontend-template.tsx
+root.component.tsx
+root.component.test.tsx
+styles/
+types/
 
 ## Customizing for a New App
 

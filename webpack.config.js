@@ -31,28 +31,6 @@ module.exports = (webpackConfigEnv, argv) => {
         },
       ],
     },
-    devServer: {
-      static: [
-        {
-          directory: path.join(__dirname, "local-dev-env"),
-          publicPath: "/importmap",
-        },
-        {
-          directory: path.join(
-            __dirname,
-            "node_modules/@madie/madie-root/dist/",
-          ),
-          publicPath: "/",
-        },
-        {
-          directory: path.join(
-            __dirname,
-            "node_modules/@madie/madie-auth/dist/",
-          ),
-          publicPath: "/madie-auth",
-        },
-      ],
-    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(
